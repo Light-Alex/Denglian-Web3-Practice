@@ -101,10 +101,10 @@ func main() {
 	// 打印结果
 	fmt.Printf("mining completed for difficulty 4, hash content: %s, hash value: %s, cost time: %v\n", resFor4.Content, resFor4.Hash, resFor4.Time)
 
-	// 挖矿, 难度值为5
-	resFor5 := mining(5, "Light Alex")
-	// 打印结果
-	fmt.Printf("mining completed for difficulty 5, hash content: %s, hash value: %s, cost time: %v\n", resFor5.Content, resFor5.Hash, resFor5.Time)
+	// // 挖矿, 难度值为5
+	// resFor5 := mining(5, "Light Alex")
+	// // 打印结果
+	// fmt.Printf("mining completed for difficulty 5, hash content: %s, hash value: %s, cost time: %v\n", resFor5.Content, resFor5.Hash, resFor5.Time)
 
 	// 生成RSA密钥对, 2048位
 	privateKey, publicKey, err := generateRSAKeyPair(2048)
