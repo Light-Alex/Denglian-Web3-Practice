@@ -1,0 +1,12 @@
+{
+    "title": "Your Name NFT",
+    "description": "Your Name NFT",
+    "image": "ipfs://QmUNWUmprxpGfV5LcrsFbqcRWFqL9F9iM2keUz76cWTuAH",
+    "attributes": [
+        {
+            "trait_type": "style",
+            "value": "Japanese style"
+        }
+    ],
+    "version": "1.0.0"
+}

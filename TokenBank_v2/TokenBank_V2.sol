@@ -12,6 +12,7 @@ interface IERC20 {
 // 定义接收代币回调的接口
 interface ITokenReceiver {
     function tokensReceived(address from, uint256 amount) external returns (bool);
+    function tokensReceivedWithData(address from, uint256 amount, bytes calldata data) external returns (bool);
 }
 
 // 扩展的ERC20合约，添加带有回调功能的转账函数
@@ -69,6 +70,30 @@ contract ExtendedERC20 {
                 // 回调成功
             } catch {
                 // 回调失败，但不回滚交易
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    // 添加带有回调功能且附带data处理的转账函数
+    function transferWithCallbackWithData(address _to, uint256 _amount, bytes calldata _data) public returns (bool) {
+        require(balances[msg.sender] >= _amount, "ERC20: transfer amount exceeds balance");
+        require(_to != address(0), "ERC20: transfer to the zero address");
+        
+        balances[msg.sender] -= _amount;
+        balances[_to] += _amount;
+
+        emit Transfer(msg.sender, _to, _amount);
+        
+        // 如果接收方是合约，调用其tokensReceived方法
+        if (isContract(_to)) {
+            try ITokenReceiver(_to).tokensReceivedWithData(msg.sender, _amount, _data) returns (bool) {
+                // 回调成功
+            } catch {
+                // 回调失败，但不回滚交易
+                return false;
             }
         }
         
@@ -86,6 +111,30 @@ contract ExtendedERC20 {
         
         emit Transfer(_from, _to, _value); 
         return true; 
+    }
+
+    function transferFromWithCallbackWithData(address _from, address _to, uint256 _amount, bytes calldata _data) external returns (bool) {
+        require(balances[_from] >= _amount, "ERC20: transfer amount exceeds balance");
+        require(allowances[_from][msg.sender] >= _amount, "ERC20: transfer amount exceeds allowance");
+        require(_to != address(0), "ERC20: transfer to the zero address");
+
+        balances[_from] -= _amount;
+        balances[_to] += _amount;
+        allowances[_from][msg.sender] -= _amount;
+        
+        emit Transfer(_from, _to, _amount); 
+        
+        // 如果接收方是合约，调用其tokensReceived方法
+        if (isContract(_to)) {
+            try ITokenReceiver(_to).tokensReceivedWithData(_from, _amount, _data) returns (bool) {
+                // 回调成功
+            } catch {
+                // 回调失败，但不回滚交易
+                return false;
+            }
+        }
+        
+        return true;
     }
 
     function approve(address _spender, uint256 _value) public returns (bool success) {
@@ -185,6 +234,20 @@ contract TokenBankV2 is TokenBank, ITokenReceiver {
     
     // 实现tokensReceived接口，处理通过transferWithCallback接收到的代币
     function tokensReceived(address from, uint256 amount) external override returns (bool) {
+        // 检查调用者是否为代币合约
+        require(msg.sender == address(token), "TokenBankV2: caller is not the token contract");
+        
+        // 更新用户的存款记录
+        deposits[from] += amount;
+        
+        // 触发存款事件
+        emit Deposit(from, amount);
+        
+        return true;
+    }
+    
+    // 实现tokensReceivedWithData接口，处理通过transferWithCallbackWithData接收到的代币
+    function tokensReceivedWithData(address from, uint256 amount, bytes calldata data) external override returns (bool) {
         // 检查调用者是否为代币合约
         require(msg.sender == address(token), "TokenBankV2: caller is not the token contract");
         

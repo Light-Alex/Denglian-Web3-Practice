@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/utils/Address.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v4.9.5/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
@@ -110,7 +110,7 @@ contract BaseERC721 {
 
         // should return baseURI
         /**code*/
-        return string(abi.encodePacked(_baseURI, tokenId.toString()));
+        return _baseURI;
     }
 
     /**
