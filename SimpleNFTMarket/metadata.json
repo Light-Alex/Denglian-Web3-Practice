@@ -1,0 +1,12 @@
+{
+    "title": "Secret Place NFT",
+    "description": "Secret Place NFT",
+    "image": "ipfs://QmbfTGixvBdxVrfJLTFTdzy9kSeSiPHjwxmCm1aiymsFSU",
+    "attributes": [
+        {
+            "trait_type": "style",
+            "value": "Japanese style"
+        }
+    ],
+    "version": "1.0.0"
+}
