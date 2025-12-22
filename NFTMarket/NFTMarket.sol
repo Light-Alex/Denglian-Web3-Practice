@@ -88,7 +88,7 @@ contract NFTMarket is ITokenReceiver {
     }
 
     // 上架NFT
-    function createNFTSale(address _nftContract, uint256 _tokenId, uint256 _price) external onlyApproved(_tokenId, _nftContract) returns (uint256) {
+    function list(address _nftContract, uint256 _tokenId, uint256 _price) external onlyApproved(_tokenId, _nftContract) returns (uint256) {
         // 确保上架价格大于0
         require(_price > 0, "NFTMarket: price must be greater than zero");
 
@@ -115,7 +115,7 @@ contract NFTMarket is ITokenReceiver {
     }
     
     // 取消上架
-    function cancelNFTSale(uint256 _saleId) external onlyApproved(nftSales[_saleId].tokenId, nftSales[_saleId].nftContract) {
+    function cancelListing(uint256 _saleId) external onlyApproved(nftSales[_saleId].tokenId, nftSales[_saleId].nftContract) {
         // 确保上架ID有效
         require(_saleId < nextSaleId, "NFTMarket: invalid saleId");
 
@@ -135,7 +135,7 @@ contract NFTMarket is ITokenReceiver {
     }
 
     // 购买NFT
-    function buyNFTSale(uint256 _saleId) external {
+    function buyNFT(uint256 _saleId) external {
         // 确保上架ID有效
         require(_saleId < nextSaleId, "NFTMarket: invalid saleId");
 
