@@ -81,7 +81,17 @@ contract NFTMarket is IERC721Receiver {
         tokenSeller[tokenId] = msg.sender;
     }
 
-    // 购买NFT
+    function buy(uint256 tokenId, uint256 price) external {
+        require(price >= tokenIdPrice[tokenId], "NFTMarket: not enough price");
+        require(IERC721(nftToken).ownerOf(tokenId) == address(this), "NFTMarket: NFT not for sale");
+        // 确保调用者是买家
+        require(msg.sender != tokenSeller[tokenId], "NFTMarket: caller is the seller");
+
+        require(IERC20(token).transferFrom(msg.sender, tokenSeller[tokenId], tokenIdPrice[tokenId]), "NFTMarket: token transfer failed");
+        IERC721(nftToken).safeTransferFrom(address(this), msg.sender, tokenId, "");
+    }
+
+    // 购买NFT, 调用CallBack函数
     function buyNFT(uint256 tokenId, uint256 price) external {
         require(price >= tokenIdPrice[tokenId], "NFTMarket: not enough price");
         require(IERC721(nftToken).ownerOf(tokenId) == address(this), "NFTMarket: NFT not for sale");
