@@ -13,7 +13,20 @@ contract MyERC20Callback is ERC20 {
         _mint(msg.sender, 1000 * 10 ** decimals());
     }
 
+    // 方式二：用户直接给NFT Market合约转账，带上tokenId，用于购买NFT
+    function transferWithCallback(address _to, uint256 _amount, bytes calldata data) external returns (bool) {
+        _transfer(msg.sender, _to, _amount);
+
+        if (_to.code.length > 0) {
+            require(TokenRecipient(_to).tokensReceived(msg.sender, _amount, data), "transferWithCallback: transfer failed");
+        }
+
+        return true;
+    }
+
     function transferFromWithCallback(address _from, address _to, uint256 _amount, bytes calldata data) external returns (bool) {
+        // 授权校验
+        _spendAllowance(_from, msg.sender, _amount);
         _transfer(_from, _to, _amount);
 
         if (_to.code.length > 0) {

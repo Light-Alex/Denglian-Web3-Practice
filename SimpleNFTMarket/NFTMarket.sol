@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 interface IERC20Callback {
+    function transferWithCallback(address _to, uint256 _amount, bytes calldata data) external returns (bool);
     function transferFromWithCallback(address _from, address _to, uint256 _amount, bytes calldata data) external returns (bool);
 }
 
@@ -81,6 +82,7 @@ contract NFTMarket is IERC721Receiver {
         tokenSeller[tokenId] = msg.sender;
     }
 
+    // 方式一：用户调用buy函数，通过transferFrom完成买家向卖家转账（需先授权）
     function buy(uint256 tokenId, uint256 price) external {
         require(price >= tokenIdPrice[tokenId], "NFTMarket: not enough price");
         require(IERC721(nftToken).ownerOf(tokenId) == address(this), "NFTMarket: NFT not for sale");
@@ -91,7 +93,7 @@ contract NFTMarket is IERC721Receiver {
         IERC721(nftToken).safeTransferFrom(address(this), msg.sender, tokenId, "");
     }
 
-    // 购买NFT, 调用CallBack函数
+    // 购买NFT, 调用CallBack函数（不推荐使用）
     function buyNFT(uint256 tokenId, uint256 price) external {
         require(price >= tokenIdPrice[tokenId], "NFTMarket: not enough price");
         require(IERC721(nftToken).ownerOf(tokenId) == address(this), "NFTMarket: NFT not for sale");
