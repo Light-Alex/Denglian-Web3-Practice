@@ -20,5 +20,5 @@ docs/
 
 .keys
 
-/lib/openzeppelin-contracts
-/lib/forge-std
+lib/openzeppelin-contracts/**
+lib/forge-std/**
