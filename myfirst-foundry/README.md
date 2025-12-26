@@ -84,3 +84,46 @@ $ forge verify-contract 0x45C0a3b13E5Dd59EF83056fE3Eb48D5850208f83 src/MyERC20.s
 # 开源部署MyERC20.s.sol合约到sepolia（相关配置在foundry.toml中）
 $ forge script .\script\MyERC20.s.sol --keystore .\.keys\metamask1 --rpc-url sepolia --broadcast --verify
 ```
+
+### Test Bank.sol
+```shell
+$ forge test --match-contract BankTest -vv
+```
+```shell
+# 结果：
+PS E:\web3_workspace\denglian-practice\myfirst-foundry> forge test --match-contract BankTest -vv
+Warning: Found unknown config section in foundry.toml: [account]
+This notation for profiles has been deprecated and may result in the profile not being registered in future versions.
+Please use [profile.account] instead or run `forge config --fix`.
+Warning: Found unknown config section in foundry.toml: [verify]
+This notation for profiles has been deprecated and may result in the profile not being registered in future versions.
+Please use [profile.verify] instead or run `forge config --fix`.
+[⠊] Compiling...
+[⠘] Compiling 1 files with Solc 0.8.25
+[⠃] Solc 0.8.25 finished in 669.04ms
+Compiler run successful!
+
+Ran 4 tests for test/Bank.t.sol:BankTest
+[PASS] test_Deposit() (gas: 84480)
+Logs:
+Logs:
+  user2 balance: 200000000000000000, balance of bank: 300000000000000000
+
+[PASS] test_Top3Users() (gas: 318635)
+Logs:
+  user1: 0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF
+  user2: 0x537C8f3d3E18dF5517a58B3fB9D9143697996802
+  user3: 0xc0A55e2205B289a967823662B841Bd67Aa362Aec
+  user4: 0x90561e5Cd8025FA6F52d849e8867C14A77C94BA0
+  bank users: 0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF, 0x0000000000000000000000000000000000000000, 0x0000000000000000000000000000000000000000
+  bank users: 0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF, 0x537C8f3d3E18dF5517a58B3fB9D9143697996802, 0x0000000000000000000000000000000000000000
+  bank users: 0xc0A55e2205B289a967823662B841Bd67Aa362Aec, 0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF, 0x537C8f3d3E18dF5517a58B3fB9D9143697996802
+  bank users: 0x90561e5Cd8025FA6F52d849e8867C14A77C94BA0, 0xc0A55e2205B289a967823662B841Bd67Aa362Aec, 0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF
+  bank users: 0x90561e5Cd8025FA6F52d849e8867C14A77C94BA0, 0x29E3b139f4393aDda86303fcdAa35F60Bb7092bF, 0xc0A55e2205B289a967823662B841Bd67Aa362Aec
+
+[PASS] test_Withdraw() (gas: 14650)
+[PASS] test_WithdrawAll() (gas: 13703)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 1.34ms (1.03ms CPU time)
+
+Ran 1 test suite in 15.06ms (1.34ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
+```
