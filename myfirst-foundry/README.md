@@ -127,3 +127,50 @@ Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 1.34ms (1.03ms CPU 
 
 Ran 1 test suite in 15.06ms (1.34ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
 ```
+
+### Test NFTMarket.sol
+```shell
+$ forge test ./test/NFTMarket.t.sol
+```
+```shell
+Warning: Found unknown config section in foundry.toml: [account]
+This notation for profiles has been deprecated and may result in the profile not being registered in future versions.
+Please use [profile.account] instead or run `forge config --fix`.
+Warning: Found unknown config section in foundry.toml: [verify]
+This notation for profiles has been deprecated and may result in the profile not being registered in future versions.
+Please use [profile.verify] instead or run `forge config --fix`.
+[⠊] Compiling...
+No files changed, compilation skipped
+
+Ran 4 tests for test/NFTMarket.t.sol:NFTMarketTest
+[PASS] invariant_tokenBalanceOfNFTMarket() (runs: 256, calls: 128000, reverts: 65854)
+
+╭---------------+---------------------+-------+---------+----------╮
+| Contract      | Selector            | Calls | Reverts | Discards |
++==================================================================+
+╭---------------+---------------------+-------+---------+----------╮
+| Contract      | Selector            | Calls | Reverts | Discards |
++==================================================================+
+| NFTMarketTest | setUp               | 40305 | 659     | 0        |
+| Contract      | Selector            | Calls | Reverts | Discards |
++==================================================================+
+| NFTMarketTest | setUp               | 40305 | 659     | 0        |
++==================================================================+
+| NFTMarketTest | setUp               | 40305 | 659     | 0        |
+| NFTMarketTest | setUp               | 40305 | 659     | 0        |
+|---------------+---------------------+-------+---------+----------|
+|---------------+---------------------+-------+---------+----------|
+| NFTMarketTest | testFuzz_listAndBuy | 40165 | 7045    | 32490    |
+|---------------+---------------------+-------+---------+----------|
+| NFTMarketTest | test_buy            | 39927 | 35568   | 0        |
+|---------------+---------------------+-------+---------+----------|
+| NFTMarketTest | test_list           | 40093 | 22582   | 0        |
+╰---------------+---------------------+-------+---------+----------╯
+
+[PASS] testFuzz_listAndBuy(uint256,uint256,uint256) (runs: 257, μ: 203367, ~: 203410)
+[PASS] test_buy() (gas: 354669)
+[PASS] test_list() (gas: 121124)
+Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 86.83s (87.04s CPU time)
+
+Ran 1 test suite in 86.84s (86.83s CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
+```
