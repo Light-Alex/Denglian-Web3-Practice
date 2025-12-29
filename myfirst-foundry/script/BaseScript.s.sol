@@ -6,6 +6,7 @@ import "forge-std/Script.sol";
 abstract contract BaseScript is Script {
     address internal deployer;
     string internal mnemonic;
+    uint256 internal deployerPrivateKey;
 
     // 设置部署配置
     function setUp() public virtual {
@@ -16,7 +17,7 @@ abstract contract BaseScript is Script {
       // (deployer, ) = deriveRememberKey(mnemonic, 0);
 
       // 从环境变量PRIVATE_KEY获取到部署者钱包的私钥
-      uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+      deployerPrivateKey = vm.envUint("PRIVATE_KEY");
       // 从私钥中获取到部署者地址
       deployer = vm.addr(deployerPrivateKey);
     }
@@ -47,7 +48,8 @@ abstract contract BaseScript is Script {
     // 广播部署交易
     modifier broadcaster() {
         // 开始广播部署交易，使用部署者地址作为交易发送者
-        vm.startBroadcast(deployer);
+        // vm.startBroadcast(deployer);
+        vm.startBroadcast(deployerPrivateKey);  // 直接用私钥部署不需要解锁钱包
         _;
         // 停止广播，结束部署交易
         vm.stopBroadcast();

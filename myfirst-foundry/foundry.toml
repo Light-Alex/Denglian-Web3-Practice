@@ -11,8 +11,8 @@ localhost = "http://localhost:8545"
 sepolia = "https://ethereum-sepolia.rpc.subquery.network/public"
 
 # 添加账户配置
-[account.default]
-private_key = "${PRIVATE_KEY}"
+# [account.default]
+# private_key = "${PRIVATE_KEY}"
 
 # Etherscan验证配置
 [etherscan.sepolia]
