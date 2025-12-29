@@ -4,3 +4,9 @@
 [submodule "myfirst-foundry/lib/openzeppelin-contracts"]
 	path = myfirst-foundry/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "TokenBank/contracts/lib/openzeppelin-contracts"]
+	path = TokenBank/contracts/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "TokenBank/contracts/lib/forge-std"]
+	path = TokenBank/contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
