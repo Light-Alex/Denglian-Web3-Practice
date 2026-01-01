@@ -1,0 +1,10 @@
+Deployment Addresses (Sepolia Testnet):
+
+BaseERC20 (MTK Token): 0xFbFfF97E9E9b087c5D4DE46cA83d0103c74B17a5
+SimpleNFT: 0xEd92c232914fE479e59B53b3d6bCF10f964dFa76
+NFTMarket: 0xd626015EC416C466a31b5c206C6b39D9589adEd7
+
+Etherscan Links:
+BaseERC20: https://sepolia.etherscan.io/address/0xFbFfF97E9E9b087c5D4DE46cA83d0103c74B17a5
+SimpleNFT: https://sepolia.etherscan.io/address/0xEd92c232914fE479e59B53b3d6bCF10f964dFa76
+NFTMarket: https://sepolia.etherscan.io/address/0xd626015EC416C466a31b5c206C6b39D9589adEd7

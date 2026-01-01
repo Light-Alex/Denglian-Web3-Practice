@@ -1,0 +1,12 @@
+{
+    "title": "Shaved Ice NFT",
+    "description": "Two bowls of delicious shaved ice",
+    "image": "ipfs://QmSW9xVDrBJaym1Bbgeny5Se8ZvEJ6F9KaouGe9CYueAwS",
+    "attributes": [
+        {
+            "trait_type": "style",
+            "value": "Japanese style"
+        }
+    ],
+    "version": "1.0.0"
+}
