@@ -14,7 +14,7 @@ contract SimpleNFT is ERC721, Ownable {
     // Token URI映射
     mapping(uint256 => string) private _tokenURIs;
 
-    constructor() ERC721("Simple NFT", "SNFT") Ownable(msg.sender) {}
+    constructor() ERC721("Simple NFT", "SNFT") Ownable() {}
 
     /**
      * @notice 铸造NFT

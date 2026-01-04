@@ -34,7 +34,7 @@ contract BaseERC20 is ERC20, Ownable {
         string memory name,
         string memory symbol,
         uint256 initialSupply
-    ) ERC20(name, symbol) Ownable(msg.sender) {
+    ) ERC20(name, symbol) Ownable() {
         _mint(msg.sender, initialSupply);
     }
 

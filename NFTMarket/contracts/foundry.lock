@@ -5,6 +5,9 @@
   "../../TokenBank/contracts/lib/openzeppelin-contracts": {
     "rev": "fcbae5394ae8ad52d8e580a3477db99814b9d565"
   },
+  "lib/erc721-permit": {
+    "rev": "32690e8aef889027b481d3e22bb482bcdc87fad2"
+  },
   "lib\\forge-std": {
     "tag": {
       "name": "v1.12.0",
@@ -13,8 +16,8 @@
   },
   "lib\\openzeppelin-contracts": {
     "tag": {
-      "name": "v5.5.0",
-      "rev": "fcbae5394ae8ad52d8e580a3477db99814b9d565"
+      "name": "v4.9.6",
+      "rev": "dc44c9f1a4c3b10af99492eed84f83ed244203f6"
     }
   }
 }

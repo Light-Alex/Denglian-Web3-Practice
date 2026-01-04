@@ -3,13 +3,13 @@
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt, useChainId } from 'wagmi';
 import { useState, useEffect } from 'react';
 import { parseEther, formatEther, encodeAbiParameters } from 'viem';
-import BaseERC20ABI from '@/contracts/BaseERC20.json';
+import MyTokenPermit from '@/contracts/MyTokenPermit.json';
 import { getContractAddress } from '@/lib/contracts';
 
 export default function ERC20TokenPage() {
   // 从环境变量获取合约地址
   const chainId = useChainId();
-  const CONTRACT_ADDRESS = getContractAddress(chainId, 'BaseERC20');
+  const CONTRACT_ADDRESS = getContractAddress(chainId, 'MyTokenPermit');
 
   const { address, isConnected } = useAccount();
   const [recipientAddress, setRecipientAddress] = useState('');
@@ -38,7 +38,7 @@ export default function ERC20TokenPage() {
     isLoading: isBalanceLoading
   } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: BaseERC20ABI,
+    abi: MyTokenPermit,
     functionName: 'balanceOf',
     args: [address],
     query: {
@@ -68,19 +68,19 @@ export default function ERC20TokenPage() {
   // 查询代币信息 - 使用 useReadContract
   const { data: tokenName, isLoading: isNameLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: BaseERC20ABI,
+    abi: MyTokenPermit,
     functionName: 'name',
   });
 
   const { data: tokenSymbol, isLoading: isSymbolLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: BaseERC20ABI,
+    abi: MyTokenPermit,
     functionName: 'symbol',
   });
 
   const { data: decimals, isLoading: isDecimalsLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: BaseERC20ABI,
+    abi: MyTokenPermit,
     functionName: 'decimals',
   });
 
@@ -121,7 +121,7 @@ export default function ERC20TokenPage() {
   // 查询授权额度 - 使用 useReadContract
   const { data: allowance, refetch: refetchAllowance, isLoading: isAllowanceLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: BaseERC20ABI,
+    abi: MyTokenPermit,
     functionName: 'allowance',
     args: [address, spenderAddress],
     query: {
@@ -194,7 +194,7 @@ export default function ERC20TokenPage() {
       const amount = parseEther(transferAmount);
       transfer({
         address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: BaseERC20ABI,
+        abi: MyTokenPermit,
         functionName: 'transfer',
         args: [recipientAddress as `0x${string}`, amount],
       }, {
@@ -225,7 +225,7 @@ export default function ERC20TokenPage() {
       const amount = parseEther(approveAmount);
       approve({
         address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: BaseERC20ABI,
+        abi: MyTokenPermit,
         functionName: 'approve',
         args: [spenderAddress as `0x${string}`, amount],
       }, {
@@ -262,7 +262,7 @@ export default function ERC20TokenPage() {
 
       transferWithCallback({
         address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: BaseERC20ABI,
+        abi: MyTokenPermit,
         functionName: 'transferWithCallback',
         args: [nftMarketAddress as `0x${string}`, amount, encodedData],
       }, {

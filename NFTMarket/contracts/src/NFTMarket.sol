@@ -3,14 +3,30 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/IERC20Permit.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@soliditylabs/erc721-permit/contracts/interfaces/IERC721Permit.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 /**
  * @title NFTMarket
  * @notice NFT marketplace that uses ERC20 tokens for trading
  * @dev Supports both regular buyNFT and callback-based purchases
  */
-contract NFTMarket is ReentrancyGuard {
+contract NFTMarket is ReentrancyGuard, EIP712 {
+
+    using SafeERC20 for IERC20;
+
+    // 使用ECDSA库进行椭圆曲线数字签名验证
+    using ECDSA for bytes32;
+
+    // 白名单签名相关的常量
+    bytes32 private constant _WHITELIST_TYPEHASH = 
+        keccak256("Whitelist(address buyer,uint256 listingId)");
+    
+    address public immutable whitelistSigner; // 项目方签名地址
 
     struct Listing {
         uint256 listingId;
@@ -46,9 +62,12 @@ contract NFTMarket is ReentrancyGuard {
 
     event ListingCancelled(uint256 indexed listingId);
 
-    constructor(address _paymentToken) {
+    constructor(address _paymentToken, address _whitelistSigner) EIP712("NFTMarket", "1.0.0") {
         require(_paymentToken != address(0), "Invalid token address");
         paymentToken = IERC20(_paymentToken);
+
+        require(_whitelistSigner != address(0), "Invalid whitelist signer");
+        whitelistSigner = _whitelistSigner;
     }
 
     /**
@@ -56,15 +75,22 @@ contract NFTMarket is ReentrancyGuard {
      * @param nftContract Address of the NFT contract
      * @param tokenId Token ID of the NFT
      * @param price Price in ERC20 tokens
+     * @param nftPermitDeadline Expiration time of the nft permit
+     * @param nftPermitSignature ERC-721 permit signature
      * @return listingId The ID of the created listing
      */
     function list(
         address nftContract,
         uint256 tokenId,
-        uint256 price
+        uint256 price,
+        uint256 nftPermitDeadline,
+        bytes memory nftPermitSignature
     ) external nonReentrant returns (uint256) {
         require(price > 0, "Price must be greater than 0");
         require(nftContract != address(0), "Invalid NFT contract");
+        
+        // Verify ERC-721 permit signature
+        IERC721Permit(nftContract).permit(address(this), tokenId, nftPermitDeadline, nftPermitSignature);
 
         IERC721 nft = IERC721(nftContract);
         require(nft.ownerOf(tokenId) == msg.sender, "Not the owner");
@@ -102,10 +128,7 @@ contract NFTMarket is ReentrancyGuard {
         listing.active = false;
 
         // Transfer payment tokens from buyer to seller
-        require(
-            paymentToken.transferFrom(msg.sender, listing.seller, listing.price),
-            "Payment transfer failed"
-        );
+        paymentToken.safeTransferFrom(msg.sender, listing.seller, listing.price);
 
         // Transfer NFT from seller to buyer
         IERC721(listing.nftContract).safeTransferFrom(
@@ -115,6 +138,89 @@ contract NFTMarket is ReentrancyGuard {
         );
 
         emit NFTPurchased(listingId, msg.sender, listing.seller, listing.price);
+    }
+
+    /**
+     * @notice Buy an NFT using ERC20 tokens with permit signature
+     * @param listingId The ID of the listing to purchase
+     * @param buyer Address of the buyer
+     * @param erc20PermitDeadline Expiration time of the erc20 permit
+     * @param v ECDSA signature parameter for ERC20 permit
+     * @param r ECDSA signature parameter for ERC20 permit
+     * @param s ECDSA signature parameter for ERC20 permit
+     * @param nftPermitDeadline Expiration time of the nft permit
+     * @param nftPermitSignature ERC-721 permit signature
+     * @param nftWhitelistSignature Whitelist signature for the NFT
+     */
+    function permitBuy(
+        uint256 listingId,
+        address buyer,
+        uint256 erc20PermitDeadline,
+        uint8 v,
+        bytes32 r,
+        bytes32 s,
+        uint256 nftPermitDeadline,
+        bytes memory nftPermitSignature,
+        bytes memory nftWhitelistSignature
+    ) external nonReentrant {
+        Listing storage listing = listings[listingId];
+        require(listing.active, "Listing not active");
+        require(msg.sender != listing.seller, "Cannot buy own NFT");
+
+        // Verify EIP-2612 permit signature
+        IERC20Permit(address(paymentToken)).permit(msg.sender, address(this), listing.price, erc20PermitDeadline, v, r, s);
+
+        // Verify ERC-721 permit signature
+        IERC721Permit(listing.nftContract).permit(address(this), listing.tokenId, nftPermitDeadline, nftPermitSignature);
+
+        // Verify whitelist signature
+        _verifyWhitelistSignature(
+            buyer,
+            listingId,
+            nftWhitelistSignature
+        );
+
+        // Mark as inactive
+        listing.active = false;
+
+        // Transfer payment tokens from buyer to seller
+        paymentToken.safeTransferFrom(buyer, listing.seller, listing.price);
+
+        // Transfer NFT from seller to buyer
+        IERC721(listing.nftContract).safeTransferFrom(
+            listing.seller,
+            buyer,
+            listing.tokenId
+        );
+
+        emit NFTPurchased(listingId, buyer, listing.seller, listing.price);
+    }
+
+    /**
+     * @dev Verify whitelist signature for the NFT
+     * @param buyer Address of the buyer
+     * @param listingId ID of the listing
+     * @param whitelistSignature Whitelist signature
+     */
+    function _verifyWhitelistSignature(
+        address buyer,
+        uint256 listingId,
+        bytes memory whitelistSignature
+    ) private view {
+        // Reconstruct the whitelist message
+        bytes32 structHash = keccak256(
+            abi.encode(
+                _WHITELIST_TYPEHASH,
+                buyer,
+                listingId
+            )
+        );
+
+        bytes32 digest = _hashTypedDataV4(structHash);
+        address signer = digest.recover(whitelistSignature);
+
+        require(signer != address(0), "ECDSA: invalid signature");
+        require(signer == whitelistSigner, "Invalid whitelist signature");
     }
 
     /**
@@ -145,10 +251,8 @@ contract NFTMarket is ReentrancyGuard {
         listing.active = false;
 
         // Transfer tokens to seller
-        require(
-            paymentToken.transfer(listing.seller, amount),
-            "Payment transfer failed"
-        );
+        paymentToken.safeTransfer(listing.seller, amount);
+
 
         // Transfer NFT to buyer
         IERC721(listing.nftContract).safeTransferFrom(

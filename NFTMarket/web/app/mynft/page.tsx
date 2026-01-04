@@ -2,13 +2,13 @@
 
 import { useAccount, useReadContract, useWriteContract, useWaitForTransactionReceipt, useChainId } from 'wagmi';
 import { useState, useEffect } from 'react';
-import SimpleNFTABI from '@/contracts/SimpleNFT.json';
+import MyNFTPermit from '@/contracts/MyNFTPermit.json';
 import { getContractAddress } from '@/lib/contracts';
 
 export default function NFTManagementPage() {
   // 从环境变量获取合约地址
   const chainId = useChainId();
-  const CONTRACT_ADDRESS = getContractAddress(chainId, 'SimpleNFT');
+  const CONTRACT_ADDRESS = getContractAddress(chainId, 'MyNFTPermit');
 
   const { address, isConnected } = useAccount();
   const [mintToAddress, setMintToAddress] = useState('');
@@ -29,19 +29,19 @@ export default function NFTManagementPage() {
   // 查询NFT信息 - 使用 useReadContract
   const { data: nftName, isLoading: isNameLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: SimpleNFTABI,
+    abi: MyNFTPermit,
     functionName: 'name',
   });
 
   const { data: nftSymbol, isLoading: isSymbolLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: SimpleNFTABI,
+    abi: MyNFTPermit,
     functionName: 'symbol',
   });
 
   const { data: ownerBalance, refetch: refetchBalance, isLoading: isBalanceLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: SimpleNFTABI,
+    abi: MyNFTPermit,
     functionName: 'balanceOf',
     args: [address],
     query: {
@@ -68,7 +68,7 @@ export default function NFTManagementPage() {
   // 查询特定Token的Owner - 使用 useReadContract
   const { data: tokenOwner, refetch: refetchTokenOwner, isLoading: isOwnerLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: SimpleNFTABI,
+    abi: MyNFTPermit,
     functionName: 'ownerOf',
     args: [tokenId ? BigInt(tokenId) : BigInt(0)],
     query: {
@@ -79,7 +79,7 @@ export default function NFTManagementPage() {
   // 查询授权状态 - 使用 useReadContract
   const { data: approvedAddress, refetch: refetchApproved, isLoading: isApprovedLoading } = useReadContract({
     address: CONTRACT_ADDRESS as `0x${string}`,
-    abi: SimpleNFTABI,
+    abi: MyNFTPermit,
     functionName: 'getApproved',
     args: [tokenId ? BigInt(tokenId) : BigInt(0)],
     query: {
@@ -154,7 +154,7 @@ export default function NFTManagementPage() {
     try {
       mintNFT({
         address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: SimpleNFTABI,
+        abi: MyNFTPermit,
         functionName: 'mint',
         args: [mintToAddress as `0x${string}`, tokenURI],
       }, {
@@ -184,7 +184,7 @@ export default function NFTManagementPage() {
     try {
       approveNFT({
         address: CONTRACT_ADDRESS as `0x${string}`,
-        abi: SimpleNFTABI,
+        abi: MyNFTPermit,
         functionName: 'approve',
         args: [approveToAddress as `0x${string}`, BigInt(tokenId)],
       }, {

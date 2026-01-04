@@ -113,9 +113,9 @@ export default function TokenBankEIP712() {
 
       // Extract v, r, s from signature
       const sig = signature.slice(2); // Remove 0x
-      const r = `0x${sig.slice(0, 64)}` as `0x${string}`;
-      const s = `0x${sig.slice(64, 128)}` as `0x${string}`;
-      const v = parseInt(sig.slice(128, 130), 16);
+      const r = `0x${sig.slice(0, 64)}` as `0x${string}`;  // 提取签名的前 64 个字符(0-63)作为 r 值, 重新添加 "0x" 前缀
+      const s = `0x${sig.slice(64, 128)}` as `0x${string}`; // 提取签名的 64-128 个字符(64-127)作为 s 值, 重新添加 "0x" 前缀
+      const v = parseInt(sig.slice(128, 130), 16); // 提取签名的最后 2 个字符(128-129)作为 v 值, 将十六进制字符串转换为十进制数字
 
       permitDeposit({
         address: CONTRACTS_PERMIT.TokenBankPermit as AddressType,

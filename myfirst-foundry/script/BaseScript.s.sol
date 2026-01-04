@@ -45,6 +45,13 @@ abstract contract BaseScript is Script {
       vm.writeJson(finalJson, filePath); 
     }
 
+    function getNetworkName(uint256 chainId) public pure returns (string memory) {
+        if (chainId == 1) return "mainnet";
+        if (chainId == 11155111) return "sepolia"; 
+        if (chainId == 31337) return "localhost";
+        return "unknown";
+    }
+
     // 广播部署交易
     modifier broadcaster() {
         // 开始广播部署交易，使用部署者地址作为交易发送者

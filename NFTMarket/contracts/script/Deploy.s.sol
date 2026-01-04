@@ -3,6 +3,8 @@ pragma solidity ^0.8.24;
 
 import "forge-std/Script.sol";
 import "../src/BaseERC20.sol";
+import "../src/MyTokenPermit.sol";
+import "../src/MyNFTPermit.sol";
 import "../src/NFTMarket.sol";
 import "../src/SimpleNFT.sol";
 
@@ -12,18 +14,27 @@ contract DeployScript is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // Deploy BaseERC20 token with 1 million initial supply (18 decimals)
-        BaseERC20 token = new BaseERC20("Market Token", "MTK", 1_000_000 * 10**18);
-        console.log("BaseERC20 deployed at:", address(token));
-        saveContract(getNetworkName(block.chainid), "BaseERC20", address(token));
+        // // Deploy BaseERC20 token with 1 million initial supply (18 decimals)
+        // BaseERC20 token = new BaseERC20("Market Token", "MTK", 1_000_000 * 10**18);
+        // console.log("BaseERC20 deployed at:", address(token));
+        // saveContract(getNetworkName(block.chainid), "BaseERC20", address(token));
 
-        // Deploy SimpleNFT
-        SimpleNFT simpleNFT = new SimpleNFT();
-        console.log("SimpleNFT deployed at:", address(simpleNFT));
-        saveContract(getNetworkName(block.chainid), "SimpleNFT", address(simpleNFT));
+        // Deploy MyTokenPermit with 1 million initial supply (18 decimals)
+        MyTokenPermit token = new MyTokenPermit(10000);
+        console.log("MyTokenPermit deployed at:", address(token));
+        saveContract(getNetworkName(block.chainid), "MyTokenPermit", address(token));
+
+        // // Deploy SimpleNFT
+        // SimpleNFT simpleNFT = new SimpleNFT();
+        // console.log("SimpleNFT deployed at:", address(simpleNFT));
+        // saveContract(getNetworkName(block.chainid), "SimpleNFT", address(simpleNFT));
+
+        MyNFTPermit myNFT = new MyNFTPermit();
+        console.log("MyNFTPermit deployed at:", address(myNFT));
+        saveContract(getNetworkName(block.chainid), "MyNFTPermit", address(myNFT));
 
         // Deploy NFTMarket with token address
-        NFTMarket nftMarket = new NFTMarket(address(token));
+        NFTMarket nftMarket = new NFTMarket(address(token), address(vm.addr(deployerPrivateKey)));
         console.log("NFTMarket deployed at:", address(nftMarket));
         saveContract(getNetworkName(block.chainid), "NFTMarket", address(nftMarket));
 
@@ -31,8 +42,10 @@ contract DeployScript is Script {
 
         console.log("\n=== Deployment Complete ===");
         console.log("Deployer address: ", vm.addr(deployerPrivateKey));
-        console.log("BaseERC20:", address(token));
-        console.log("SimpleNFT:", address(simpleNFT));
+        // console.log("BaseERC20:", address(token));
+        // console.log("SimpleNFT:", address(simpleNFT));
+        console.log("MyTokenPermit:", address(token));
+        console.log("MyNFTPermit:", address(myNFT));
         console.log("NFTMarket:", address(nftMarket));
     }
 
@@ -64,5 +77,5 @@ contract DeployScript is Script {
         if (chainId == 11155111) return "sepolia"; 
         if (chainId == 31337) return "localhost";
         return "unknown";
-}
+    }
 }

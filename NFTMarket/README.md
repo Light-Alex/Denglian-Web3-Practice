@@ -71,7 +71,10 @@ cd NFTMarket
 cd contracts
 
 # 安装依赖
-forge install
+# forge install
+forge install foundry-rs/forge-std
+forge install openzeppelin/openzeppelin-contracts@v4.9.6
+forge install erc721-permit/erc721-permit
 
 # 配置环境变量
 cp .env.example .env
