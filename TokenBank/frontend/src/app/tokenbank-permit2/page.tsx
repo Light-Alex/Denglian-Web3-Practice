@@ -170,7 +170,7 @@ export default function TokenBankPermit2() {
     if (!permit2DepositAmount || !address || !chain) return;
 
     const amount = parseEther(permit2DepositAmount);
-    const deadline = Math.floor(Date.now() / 1000) + 3600;
+    const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
     const nonce = Date.now();
 
     // Store parameters for later use

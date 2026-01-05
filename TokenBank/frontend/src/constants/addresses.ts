@@ -20,8 +20,8 @@ export const CONTRACTS_PERMIT = {
 
 // Permit2 Contracts
 export const CONTRACTS_PERMIT2 = {
-  MyToken: '0x5f294752D1987050d3c50B12fad5D47972eb515D',
-  TokenBankPermit2: '0x5eda0b5fb6c8bd6f19981f2f5ac67555c35e58b2',
+  MyToken: '0xC3310c7E1CA7a494D494C6B55BedADD19C6D4fc8',
+  TokenBankPermit2: '0x4b3045a44d327b2Bee0ed1B6F8a2fB817F82B3ba',
   Permit2: '0x000000000022D473030F116dDEE9F6B43aC78BA3', // Official Uniswap Permit2 on Sepolia
 } as const;
 
