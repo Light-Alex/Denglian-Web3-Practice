@@ -19,7 +19,7 @@ import { privateKeyToAccount } from "viem/accounts";
 dotenv.config();
 
 const COUNTER_ADDRESS = "0x610178dA211FEF7D417bC0e6FeD39F05609AD788";
-const ERC20_ADDRESS = "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+const ERC20_ADDRESS = "0xC3310c7E1CA7a494D494C6B55BedADD19C6D4fc8";
 
 const main = async () => {
   // 创建一个公共客户端

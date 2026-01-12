@@ -19,7 +19,8 @@
     "keystore_demo": "node src/keystore_demo.js",
     "sign_verify": "tsc && node dist/sign_verify.js",
     "simulator": "tsc && node dist/transaction_simulator.js",
-    "simulator_example": "tsc && node dist/simulator_example.js"
+    "simulator_example": "tsc && node dist/simulator_example.js",
+    "erc20_transfer": "tsc && node dist/erc20_transfer.js"
   },
   "keywords": [],
   "author": "",
