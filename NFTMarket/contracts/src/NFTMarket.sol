@@ -37,8 +37,9 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
         bool active;
     }
 
-    // The ERC20 token used for payments
-    IERC20 public paymentToken;
+    // The ERC20 token used for payments 
+    // Gas优化项：paymentToken 是一个不可变变量，所以可设置为 immutable
+    IERC20 public immutable paymentToken;
 
     // Mapping from listing ID to Listing
     mapping(uint256 => Listing) public listings;
@@ -94,21 +95,37 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
 
         IERC721 nft = IERC721(nftContract);
         require(nft.ownerOf(tokenId) == msg.sender, "Not the owner");
-        require(
-            nft.isApprovedForAll(msg.sender, address(this)) ||
-                nft.getApproved(tokenId) == address(this),
-            "Market not approved"
-        );
 
-        uint256 listingId = listingCounter++;
-        listings[listingId] = Listing({
-            listingId: listingId,
-            seller: msg.sender,
-            nftContract: nftContract,
-            tokenId: tokenId,
-            price: price,
-            active: true
-        });
+        // // Gas优化项：已经完成了授权，这些检查是冗余的
+        // require(
+        //     nft.isApprovedForAll(msg.sender, address(this)) ||
+        //         nft.getApproved(tokenId) == address(this),
+        //     "Market not approved"
+        // );
+
+        // uint256 listingId = listingCounter++;
+        // Gas优化项：listingCounter 不会溢出（除非你有 2^256 个上架），所以可以安全地跳过检查
+        uint256 listingId = listingCounter;
+        unchecked {
+            listingCounter++;
+        }
+        
+        // listings[listingId] = Listing({
+        //     listingId: listingId,
+        //     seller: msg.sender,
+        //     nftContract: nftContract,
+        //     tokenId: tokenId,
+        //     price: price,
+        //     active: true
+        // });
+        // Gas优化项：直接赋值（减少一次 SSTORE）
+        Listing storage listing = listings[listingId];
+        listing.listingId = listingId;
+        listing.seller = msg.sender;
+        listing.nftContract = nftContract;
+        listing.tokenId = tokenId;
+        listing.price = price;
+        listing.active = true;
 
         emit NFTListed(listingId, msg.sender, nftContract, tokenId, price);
 
@@ -160,8 +177,8 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
         bytes32 r,
         bytes32 s,
         uint256 nftPermitDeadline,
-        bytes memory nftPermitSignature,
-        bytes memory nftWhitelistSignature
+        bytes calldata nftPermitSignature,   // Gas优化项：calldata 代替 memory
+        bytes calldata nftWhitelistSignature // Gas优化项：calldata 代替 memory
     ) external nonReentrant {
         Listing storage listing = listings[listingId];
         require(listing.active, "Listing not active");

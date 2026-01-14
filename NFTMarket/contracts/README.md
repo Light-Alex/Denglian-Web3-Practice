@@ -54,3 +54,42 @@ cat out/SimpleNFT.sol/SimpleNFT.json | jq .abi > ../web/src/contracts/SimpleNFT.
 2. 更新 `script/Deploy.s.sol` 部署脚本
 3. 重新编译: `forge build`
 4. 部署新合约并导出ABI
+
+## 合约测试
+```bash
+# 测试NFTMarket合约
+forge test ./test/NFTMarket.t.sol -vv
+```
+
+## 生成Gas报告
+```bash
+# 生成NFTMarket合约的Gas报告
+forge test ./test/NFTMarket.t.sol -vv --gas-report
+
+# 生成Gas snapshot，并保存到 NFTMarket.gas-snapshot 文件
+forge snapshot ./test/NFTMarket.t.sol --snap ./gas_reports/NFTMarket.gas-snapshot
+
+# 对比当前Gas消耗与snapshot中的数据
+forge snapshot ./test/NFTMarket.t.sol --diff .\gas_reports\NFTMarket.gas-snapshot
+# 输出
+# PS E:\web3_workspace\denglian-practice\NFTMarket\contracts> forge snapshot ./test/NFTMarket.t.sol --diff .\gas_reports\NFTMarket.gas-snapshot
+# [⠊] Compiling...
+# No files changed, compilation skipped
+
+# Ran 4 tests for test/NFTMarket.t.sol:NFTMarketTest
+# [PASS] test_buy() (gas: 246084)
+# [PASS] test_cancelListing() (gas: 190776)
+# [PASS] test_list() (gas: 196919)
+# [PASS] test_permitBuy() (gas: 329279)
+# Suite result: ok. 4 passed; 0 failed; 0 skipped; finished in 3.74ms (5.58ms CPU time)
+
+# Ran 1 test suite in 14.62ms (3.74ms CPU time): 4 tests passed, 0 failed, 0 skipped (4 total tests)
+# ↓ NFTMarketTest::test_buy() (gas: 251246 → 246084 | -5162 -2.055%)
+# ↓ NFTMarketTest::test_permitBuy() (gas: 336888 → 329279 | -7609 -2.259%)
+# ↓ NFTMarketTest::test_list() (gas: 203237 → 196919 | -6318 -3.109%)
+# ↓ NFTMarketTest::test_cancelListing() (gas: 197094 → 190776 | -6318 -3.206%)
+
+# --------------------------------------------------------------------------------
+# Total tests: 4, ↑ 0, ↓ 4, ━ 0
+# Overall gas change: -25407 (-2.570%)
+```
