@@ -22,3 +22,9 @@
 [submodule "NFTMarket/contracts/lib/erc721-permit"]
 	path = NFTMarket/contracts/lib/erc721-permit
 	url = https://github.com/erc721-permit/erc721-permit
+[submodule "myfirst-foundry/lib/openzeppelin-foundry-upgrades"]
+	path = myfirst-foundry/lib/openzeppelin-foundry-upgrades
+	url = https://github.com/OpenZeppelin/openzeppelin-foundry-upgrades
+[submodule "myfirst-foundry/lib/openzeppelin-contracts-upgradeable"]
+	path = myfirst-foundry/lib/openzeppelin-contracts-upgradeable
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts-upgradeable
