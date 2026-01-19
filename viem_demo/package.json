@@ -21,7 +21,8 @@
     "simulator": "tsc && node dist/transaction_simulator.js",
     "simulator_example": "tsc && node dist/simulator_example.js",
     "erc20_transfer": "tsc && node dist/erc20_transfer.js",
-    "getStorageAt": "tsc && node dist/getStorageAt.js"
+    "getStorageAt": "tsc && node dist/getStorageAt.js",
+    "abi_encode": "tsc && node dist/abi_encode.js"
   },
   "keywords": [],
   "author": "",

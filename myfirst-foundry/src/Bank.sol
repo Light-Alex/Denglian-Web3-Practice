@@ -79,4 +79,10 @@ contract Bank {
         (bool status, ) = payable(admin).call{value: balance}("");
         require(status, "Withdrawal failed");
     }
+
+    function collectWithThreshold() external {
+        uint256 balance = address(this).balance;
+        (bool status, ) = payable(admin).call{value: balance/2}("");
+        require(status, "Collect failed");
+    }
 }

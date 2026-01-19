@@ -114,4 +114,19 @@ contract BankTest is Test {
         vm.expectRevert("No balance to withdraw");
         bank.withdrawAll();
     }
+
+    function test_CollectWithThreshold() public {
+        // 检查只有管理员可取款，其他人不可以取款
+        vm.startPrank(user1);
+        vm.deal(user1, 1 ether);
+        bank.deposit{value: 1 ether}();
+        console.log("bank balance", address(bank).balance);
+        bank.collectWithThreshold();
+        // 检查管理员取款金额为合约余额的一半
+        assertEq(address(bank).balance, 0.5 ether, "Bank balance should be 0.5 ether");
+        vm.stopPrank();
+    }
+
+    // 添加 receive 函数，让 BankTest 合约可以接收 ETH
+    receive() external payable {}
 }

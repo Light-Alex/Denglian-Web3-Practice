@@ -17,7 +17,11 @@ abstract contract BaseScript is Script {
       // (deployer, ) = deriveRememberKey(mnemonic, 0);
 
       // 从环境变量PRIVATE_KEY获取到部署者钱包的私钥
-      deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+      if (block.chainid == 11155111) {
+        deployerPrivateKey = vm.envUint("SEPOLIA_PRIVATE_KEY");
+      } else {
+        deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+      }
       // 从私钥中获取到部署者地址
       deployer = vm.addr(deployerPrivateKey);
     }
