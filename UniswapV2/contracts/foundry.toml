@@ -1,0 +1,43 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+ast = true
+ffi = true
+optimizer = true          # 启用优化器
+optimizer_runs = 500      # 优化次数
+fs_permissions = [
+{ access = "read-write", path = "./deployments" },
+{ access = "read", path = "./out" },
+]
+# 只编译源代码，不编译脚本（避免版本冲突）
+# 脚本需要单独处理
+
+# Foundry 会自动处理不同版本的 Solidity
+# 只需要确保 forge-std 在 lib 目录中即可
+
+[rpc_endpoints]
+localhost = "http://localhost:8545"
+sepolia = "https://ethereum-sepolia.rpc.subquery.network/public"
+
+# 添加账户配置
+# [account.default]
+# private_key = "${PRIVATE_KEY}"
+
+# Etherscan验证配置
+[etherscan.sepolia]
+key = "${ETHERSCAN_API_KEY}"
+url = "https://api-sepolia.etherscan.io/api"
+chain = 11155111
+
+# 验证器配置
+[verify]
+# 默认验证器（可选）
+# default_verifier = "etherscan"
+
+# 网络特定的验证配置
+[verify.sepolia]
+verifier = "etherscan"
+verifier_url = "https://api-sepolia.etherscan.io/api"
+
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

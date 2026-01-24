@@ -10,11 +10,6 @@ import { Upgrades, Options } from "openzeppelin-foundry-upgrades/Upgrades.sol";
 
 contract DeployNFTMarketScript is BaseScript {
     function run() public broadcaster {
-        // 打印部署者地址
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        // 从私钥中获取到部署者地址
-        deployer = vm.addr(deployerPrivateKey);
-
         // Deploy MyTokenPermit with 1 million initial supply (18 decimals)
         MyTokenPermit token = new MyTokenPermit(10000);
         saveContract(getNetworkName(block.chainid), "MyTokenPermit", address(token));

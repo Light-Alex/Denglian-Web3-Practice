@@ -10,10 +10,6 @@ contract MyNFTMarketScript is BaseScript {
 
     // 部署 MyNFTMarket 合约
     function run() public broadcaster {
-        // 打印部署者地址
-        uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        // 从私钥中获取到部署者地址
-        deployer = vm.addr(deployerPrivateKey);
         console.log("Deployer address: %s", deployer);
 
         // 部署 MyERC20 合约

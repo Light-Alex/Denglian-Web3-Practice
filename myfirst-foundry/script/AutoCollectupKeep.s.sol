@@ -9,14 +9,6 @@ contract AutoCollectupKeepScript is BaseScript {
 
     // 部署 MyToken 合约
     function run() public broadcaster {
-        uint256 deployerPrivateKey;
-        // 从私钥中获取到部署者地址
-        if (block.chainid == 11155111) {
-          deployerPrivateKey = vm.envUint("SEPOLIA_PRIVATE_KEY");
-        } else {
-          deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-        }
-        deployer = vm.addr(deployerPrivateKey);
         console.log("Deployer address: %s", deployer);
 
         Bank bank = new Bank();

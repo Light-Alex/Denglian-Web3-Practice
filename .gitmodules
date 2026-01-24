@@ -1,8 +1,5 @@
-[submodule "myfirst-foundry/lib/forge-std"]
-	path = myfirst-foundry/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
-[submodule "myfirst-foundry/lib/openzeppelin-contracts"]
-	path = myfirst-foundry/lib/openzeppelin-contracts
+[submodule "lib/openzeppelin-contracts"]
+	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
 [submodule "TokenBank/contracts/lib/openzeppelin-contracts"]
 	path = TokenBank/contracts/lib/openzeppelin-contracts
@@ -10,18 +7,12 @@
 [submodule "TokenBank/contracts/lib/forge-std"]
 	path = TokenBank/contracts/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "lib/openzeppelin-contracts"]
-	path = lib/openzeppelin-contracts
-	url = https://github.com/OpenZeppelin/openzeppelin-contracts
-[submodule "NFTMarket/contracts/lib/openzeppelin-contracts"]
-	path = NFTMarket/contracts/lib/openzeppelin-contracts
-	url = https://github.com/openzeppelin/openzeppelin-contracts
-[submodule "NFTMarket/contracts/lib/forge-std"]
-	path = NFTMarket/contracts/lib/forge-std
+[submodule "myfirst-foundry/lib/forge-std"]
+	path = myfirst-foundry/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "NFTMarket/contracts/lib/erc721-permit"]
-	path = NFTMarket/contracts/lib/erc721-permit
-	url = https://github.com/erc721-permit/erc721-permit
+[submodule "myfirst-foundry/lib/openzeppelin-contracts"]
+	path = myfirst-foundry/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
 [submodule "myfirst-foundry/lib/openzeppelin-foundry-upgrades"]
 	path = myfirst-foundry/lib/openzeppelin-foundry-upgrades
 	url = https://github.com/OpenZeppelin/openzeppelin-foundry-upgrades
@@ -31,3 +22,15 @@
 [submodule "myfirst-foundry/lib/chainlink-brownie-contracts"]
 	path = myfirst-foundry/lib/chainlink-brownie-contracts
 	url = https://github.com/smartcontractkit/chainlink-brownie-contracts
+[submodule "NFTMarket/contracts/lib/openzeppelin-contracts"]
+	path = NFTMarket/contracts/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "NFTMarket/contracts/lib/forge-std"]
+	path = NFTMarket/contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "NFTMarket/contracts/lib/erc721-permit"]
+	path = NFTMarket/contracts/lib/erc721-permit
+	url = https://github.com/erc721-permit/erc721-permit
+[submodule "UniswapV2/contracts/lib/forge-std"]
+	path = UniswapV2/contracts/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
