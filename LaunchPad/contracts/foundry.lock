@@ -1,0 +1,32 @@
+{
+  "../../NFTMarket/contracts/lib/erc721-permit": {
+    "rev": "32690e8aef889027b481d3e22bb482bcdc87fad2"
+  },
+  "../../NFTMarket/contracts/lib/forge-std": {
+    "rev": "7117c90c8cf6c68e5acce4f09a6b24715cea4de6"
+  },
+  "../../NFTMarket/contracts/lib/openzeppelin-contracts": {
+    "rev": "dc44c9f1a4c3b10af99492eed84f83ed244203f6"
+  },
+  "../../TokenBank/contracts/lib/forge-std": {
+    "rev": "7117c90c8cf6c68e5acce4f09a6b24715cea4de6"
+  },
+  "../../TokenBank/contracts/lib/openzeppelin-contracts": {
+    "rev": "fcbae5394ae8ad52d8e580a3477db99814b9d565"
+  },
+  "../../myfirst-foundry/lib/chainlink-brownie-contracts": {
+    "rev": "5cb41fbc9b525338b6098da5ea7dd0b7e92f89e4"
+  },
+  "../../myfirst-foundry/lib/openzeppelin-contracts-upgradeable": {
+    "rev": "aa677e9d28ed78fc427ec47ba2baef2030c58e7c"
+  },
+  "../../myfirst-foundry/lib/openzeppelin-foundry-upgrades": {
+    "rev": "cbce1e00305e943aa1661d43f41e5ac72c662b07"
+  },
+  "lib\\openzeppelin-contracts": {
+    "tag": {
+      "name": "v5.5.0",
+      "rev": "fcbae5394ae8ad52d8e580a3477db99814b9d565"
+    }
+  }
+}

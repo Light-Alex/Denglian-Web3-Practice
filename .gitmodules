@@ -34,3 +34,6 @@
 [submodule "UniswapV2/contracts/lib/forge-std"]
 	path = UniswapV2/contracts/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "LaunchPad/contracts/lib/openzeppelin-contracts"]
+	path = LaunchPad/contracts/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts

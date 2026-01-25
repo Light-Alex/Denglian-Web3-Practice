@@ -1,0 +1,20 @@
+{
+  "name": "foundry-demo",
+  "version": "1.0.0",
+  "description": "完整的 DeFi 协议智能合约实现，包括 Swap（AMM）、质押、流动性挖矿、LaunchPad 和 Meme 代币工厂。",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@chainlink/contracts": "^1.4.0",
+    "@chainlink/contracts-ccip": "^1.6.0"
+  }
+}
