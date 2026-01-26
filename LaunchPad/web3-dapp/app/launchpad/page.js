@@ -590,7 +590,7 @@ export default function LaunchPadPage() {
           <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg shadow-lg p-6 text-white">
             <div className="text-sm opacity-90 mb-1">总募集额</div>
             <div className="text-x font-bold">
-              {formatUSD(projects.projects.reduce((sum, p) => sum + p.raised, 0))}
+              {formatUSD(projects.projects.reduce((sum, p) => sum + Number(p.raised), 0))}
             </div>
           </div>
         </div>
