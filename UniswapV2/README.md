@@ -199,7 +199,7 @@ forge script .\script\DeployMuticallScript.s.sol --rpc-url sepolia --broadcast -
 "logoURI": "ipfs://QmZhqnVhFJF5yo3A2Rsc8hqEhS18aGFrqh3baGB7JujaMN"
 }
 ```
-将修改后的uniswap-default.tokenlist.json文件上传到IPFS，获取IPFS地址，例如: ipfs://QmZhqnVhFJF5yo3A2Rsc8hqEhS18aGFrqh3baGB7JujaMN，后续Uniswap前端部署后，可通过界面导入该tokenList文件，即可在Uniswap前端中使用WETH、TUNI、TUNI2等代币了。
+将修改后的uniswap-default.tokenlist.json文件上传到IPFS，获取IPFS地址，例如: ipfs://QmTZkqqEP2dufQ3E3MBAtwGjgu9qP3aC1t82993VSGKh8N，后续Uniswap前端部署后，可通过界面导入该tokenList文件，即可在Uniswap前端中使用WETH、TUNI、TUNI2等代币了。
 
 #### 将SDK发布到npm上
 1. 修改package.json
