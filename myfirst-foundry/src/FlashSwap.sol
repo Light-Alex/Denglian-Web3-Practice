@@ -21,13 +21,13 @@ interface IUniswapV2Router02 {
     function getAmountIn(uint amountOut, uint reserveIn, uint reserveOut) external pure returns (uint amountIn);
 }
 
-// 闪电贷流程: 
-// 1. 闪电贷合约从poolA中借贷tokenA
-// 2. 闪电贷合约在poolB中用全部tokenA换tokenB
-// 3. 闪电贷合约计算需要还poolA多少tokenA(加上手续费)
-// 4. 闪电贷合约计算在poolA中如果需要还这么多tokenA，对应需要多少tokenB(加上手续费)
-// 5. 闪电贷合约将对应数量tokenB还给poolA
-// 6. 闪电贷合约中剩余的tokenB即为赚取费用
+// 闪电兑流程: 
+// 1. 闪电兑合约从poolA中借贷tokenA
+// 2. 闪电兑合约在poolB中用全部tokenA换tokenB
+// 3. 闪电兑合约计算需要还poolA多少tokenA(加上手续费)
+// 4. 闪电兑合约计算在poolA中如果需要还这么多tokenA，对应需要多少tokenB(加上手续费)
+// 5. 闪电兑合约将对应数量tokenB还给poolA
+// 6. 闪电兑合约中剩余的tokenB即为赚取费用
 contract FlashSwap {
     address private immutable UNISWAP_V2_ROUTER_01; // 价格低的Uniswap V2 Router合约地址
     address private immutable UNISWAP_V2_ROUTER_02; // 价格高的Uniswap V2 Router合约地址
@@ -59,7 +59,7 @@ contract FlashSwap {
         UNISWAP_V2_FACTORY_02 = IUniswapV2Router02(_UNISWAP_V2_ROUTER_02).factory();
     }
     
-    // 检查闪电贷条件
+    // 检查闪电兑条件
     function checkFlashSwapConditions(
         address tokenA,  // 贷款token
         address tokenB,  // 交换token
@@ -178,7 +178,7 @@ contract FlashSwap {
         require(poolA != address(0), "Invalid PoolA address");
         require(poolB != address(0), "Invalid PoolB address");
 
-        // 从 poolA 开始闪电贷
+        // 从 poolA 开始闪电兑
         IUniswapV2Pair pair = IUniswapV2Pair(poolA);
         address token0 = pair.token0();
         address token1 = pair.token1();
@@ -192,7 +192,7 @@ contract FlashSwap {
         // 编码数据传递给回调函数
         bytes memory data = abi.encode(poolB, tokenA, tokenB, amountToBorrow);
         
-        // 执行闪电贷
+        // 执行闪电兑
         pair.swap(amount0Out, amount1Out, address(this), data);
     }
     
