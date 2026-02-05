@@ -18,7 +18,7 @@ contract DeployRouter02Script is BaseScript {
 
         // 部署 UniswapV2Router02 合约
         // 需要手动更改factory合约地址
-        UniswapV2Router02 router = new UniswapV2Router02(0xB14A5d0B40D51ec0A45fB4599519aD19Ae826661, address(weth));
+        UniswapV2Router02 router = new UniswapV2Router02(0x8da4A38D71c94a0fDCB9E26f17d1Bc02c5eD2710, address(weth));
         saveContract(getNetworkName(block.chainid), "UniswapV2Router02", address(router));
         console.log("UniswapV2Router02 deployed on %s", address(router));
     }

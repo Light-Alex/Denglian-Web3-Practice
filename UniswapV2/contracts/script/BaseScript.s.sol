@@ -49,8 +49,6 @@ abstract contract BaseScript is Script {
       vm.writeJson(finalJson, filePath);
     }
 
-    function 
-
     function getNetworkName(uint256 chainId) public pure returns (string memory) {
         if (chainId == 1) return "mainnet";
         if (chainId == 11155111) return "sepolia";

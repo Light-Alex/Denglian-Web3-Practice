@@ -252,7 +252,7 @@ contract UniswapV2Pair is IUniswapV2Pair, UniswapV2ERC20 {
         // 检查恒定乘积公式 (x + 0.003*x)*(y + 0.003*y) >= x*y
         // 手续费为0.3%，即1000中有3份
         // 计算调整后的余额（考虑手续费）
-        // balance0Adjusted = balance0 × 1000 - amountIn × 3
+        // balance0Adjusted = balance0 × 1000 - amountIn × 3(放大了1000倍, 原始实际参与x * y = k计算的balance: balance0 - amount0In*(3/1000))
         // balance1Adjusted = balance1 × 1000 - amountIn × 3
         uint balance0Adjusted = balance0.mul(1000).sub(amount0In.mul(3));
         uint balance1Adjusted = balance1.mul(1000).sub(amount1In.mul(3));

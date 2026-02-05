@@ -33,7 +33,7 @@ library UniswapV2Library {
                 hex'ff',  // CREATE2 的标识字节
                 factory, // 工厂合约地址
                 keccak256(abi.encodePacked(token0, token1)), // 盐值（用于区分不同交易对）
-                hex'd9d3b144298859dd7f44fb251113fa3cb3dab51c22ca4ac33a8fc3f5407b016d' // init code hash, UniswapV2Pair 合约字节码的 keccak256 哈希值
+                hex'85cc3ee2e17c6517168d3878150c1375e6544545626dfdedfee097212ea1dbea' // init code hash, UniswapV2Pair 合约字节码的 keccak256 哈希值
             )))));
     }
 
