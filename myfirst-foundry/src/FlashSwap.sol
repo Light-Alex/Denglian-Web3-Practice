@@ -293,6 +293,7 @@ contract FlashSwap {
         uint256 amountBorrowed
     ) internal pure returns (uint256) {
         // Uniswap V2 手续费是 0.3%
+        // + 1 是为了补偿 Solidity 整数除法的向下取整 导致的精度损失
         return amountBorrowed * 1000 / 997 + 1;
     }
     
