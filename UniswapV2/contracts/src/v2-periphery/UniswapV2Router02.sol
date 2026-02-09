@@ -422,7 +422,7 @@ contract UniswapV2Router02 is IUniswapV2Router02 {
             (address token0,) = UniswapV2Library.sortTokens(input, output);
 
             // 获取当前跳的输出代币数量
-            uint amountOut = amounts[i + 1];
+            uint vUSDCAmountOut = amounts[i + 1];
 
             // 确定 amount0Out 和 amount1Out
             // 如果输入是 token0，则输出 amount1Out（amount0Out = 0）
