@@ -40,7 +40,7 @@ export function handleListingCancelled(event: ListingCancelledEvent): void {
 
 export function handleNFTListed(event: NFTListedEvent): void {
   let entity = new NFTListed(
-    event.transaction.hash.concatI32(event.logIndex.toI32())
+    event.params.seller.concatI32(event.params.listingId.toI32())
   )
   entity.listingId = event.params.listingId
   entity.seller = event.params.seller
@@ -67,6 +67,14 @@ export function handleNFTPurchased(event: NFTPurchasedEvent): void {
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
   entity.transactionHash = event.transaction.hash
+
+  let sellerID = event.params.seller.concatI32(event.params.listingId.toI32())
+  let listing = NFTListed.load(sellerID)
+  if (!listing) {
+    return
+  }
+
+  entity.list = listing.id
 
   entity.save()
 }
