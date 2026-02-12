@@ -8,8 +8,8 @@ contract MyERC20Script is BaseScript {
 
     // 部署 MyToken 合约
     function run() public broadcaster {
-        MyToken token = new MyToken("Token2 For UniswapV2", "TUNI2");
-        saveContract("localhost", "MyToken", address(token));
+        MyToken token = new MyToken("OPS Token", "OPS");
+        saveContract(getNetworkName(block.chainid), "MyToken", address(token));
         console.log("MyToken deployed on %s", address(token));
     }
 }

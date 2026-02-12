@@ -9,7 +9,7 @@ interface TokenRecipient {
 
 contract MyToken is ERC20 { 
     constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {
-        _mint(msg.sender, 1e10*1e18);
+        _mint(msg.sender, 10000*1e18);
     }
 
     function transferWithCallback(address _to, uint256 _amount, bytes calldata data) external returns (bool) {
