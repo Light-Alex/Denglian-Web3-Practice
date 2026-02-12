@@ -1,0 +1,35 @@
+specVersion: 1.3.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: NFTMarket
+    network: sepolia
+    source:
+      address: "0xBE5A57D876379244EB6D14D22b805be5b6e870c4"
+      abi: NFTMarket
+      startBlock: 9976513
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.9
+      language: wasm/assemblyscript
+      entities:
+        - EIP712DomainChanged
+        - ListingCancelled
+        - NFTListed
+        - NFTPurchased
+      abis:
+        - name: NFTMarket
+          file: ./abis/NFTMarket.json
+      eventHandlers:
+        - event: EIP712DomainChanged()
+          handler: handleEIP712DomainChanged
+        - event: ListingCancelled(indexed uint256)
+          handler: handleListingCancelled
+        - event: NFTListed(indexed uint256,indexed address,indexed address,uint256,uint256)
+          handler: handleNFTListed
+        - event: NFTPurchased(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleNFTPurchased
+      file: ./src/nft-market.ts
