@@ -1,3 +1,4 @@
+# Approval 实体，记录每一笔授权交易（不可变）
 type Approval @entity(immutable: true) {
   id: Bytes!
   owner: Bytes! # address
@@ -8,12 +9,53 @@ type Approval @entity(immutable: true) {
   transactionHash: Bytes!
 }
 
+# Transfer 实体，记录每一笔代币转账（不可变，适合做历史记录）
+# @entity 表示这个类型会被映射为一个可以被存储、查询的数据库表
+# !表示非空
 type Transfer @entity(immutable: true) {
-  id: Bytes!
-  from: Bytes! # address
-  to: Bytes! # address
-  value: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
+  id: Bytes!               # tx hash + logIndex
+  from: Bytes!             # address
+  to: Bytes!               # address
+  value: BigInt!           # uint256
+  blockNumber: BigInt!     # uint256
+  blockTimestamp: BigInt!  # uint256
+  transactionHash: Bytes!  # bytes
+}
+
+# User 实体，记录用户的持仓余额（可变，余额会随转账变动）
+type User @entity(immutable: false) {
+  id: ID!                   # 用户地址（字符串类型，主键）
+  balance: BigInt!          # 当前持仓余额
+
+  # 该用户作为 from 参与的所有转账
+  # 从 TransferWithUser 表中获取 所有 from 等于该用户地址的 Transfer 记录
+  transfersFrom: [TransferWithUser!]! @derivedFrom(field: "from")
+
+  # 该用户作为 to 参与的所有转账
+  # 从 TransferWithUser 表中获取 所有 to 等于该用户地址的 Transfer 记录
+  transfersTo: [TransferWithUser!]! @derivedFrom(field: "to")
+}
+
+
+# BalanceSnapshot 实体，记录用户余额的快照
+# @entity 表示这个类型会被映射为一个可以被存储、查询的数据库表
+# immutable: true 代表快照不可变
+type BalanceSnapshot @entity(immutable: true) {
+  id: ID!                   # 唯一ID（用户地址 + 区块高度）
+  user: Bytes!              # 用户地址
+  balance: BigInt!          # 快照时的余额
+  blockNumber: BigInt!      # 区块高度
+  blockTimestamp: BigInt!   # 区块时间戳
+}
+
+# TransferWithUser 实体，记录每一笔代币转账（不可变，适合做历史记录）
+# @entity 表示这个类型会被映射为一个可以被存储、查询的数据库表
+type TransferWithUser @entity(immutable: true) {
+  id: Bytes!                # 唯一ID（通常用 transaction hash + log index 拼接）
+  from: User!               # 转出地址
+  to: User!                 # 转入地址
+  value: BigInt!            # 转账数量（uint256）
+  blockNumber: BigInt!      # 区块高度
+  blockTimestamp: BigInt!   # 区块时间戳
+  transactionHash: Bytes!   # 交易哈希
 }
