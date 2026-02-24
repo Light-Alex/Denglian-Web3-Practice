@@ -7,13 +7,16 @@ import SimpleDelegateAbi from './abis/SimpleDelegate.json' with { type: 'json' }
 import ERC20Abi from './abis/MyERC20.json' with { type: 'json' };
 import TokenBankAbi from './abis/TokenBank.json' with { type: 'json' };
 
+/**
+ * 项目说明：EOA账户升级为智能合约账户，并自身向自身的智能合约账户地址发送EIP-7702 交易，实现批量执行向Bank授权和存款
+ */
 
 // ====== 配置 ======
 const PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 
-const SIMPLE_DELEGATE_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-const ERC20_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
-const TOKENBANK_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+const SIMPLE_DELEGATE_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+const ERC20_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const TOKENBANK_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
 
 
 // deposit 参数
@@ -27,6 +30,7 @@ async function getCodeAtAddress(address: string, publicClient:any) {
   return code;
 }
 
+// 查询指定地址的 ERC20 余额
 async function getTokenBalance(userAddress: string, publicClient:any, walletClient:any) {
     const eoaTokenBalance = await publicClient.readContract({
         address: ERC20_ADDRESS,
@@ -104,12 +108,12 @@ async function main() {
     console.log('交易状态:', receipt.status === 'success' ? '成功' : '失败')
 
   } else {
-      // 自己执行授权时，nonce +1 
+    // 自己执行授权时，nonce + 1
+    // 将EOA账户转换为合约账户（通过delegate_call的方式）
     const authorization = await walletClient.signAuthorization({
       contractAddress: SIMPLE_DELEGATE_ADDRESS,
       executor: 'self', 
     });
-
 
     // 发送 EIP-7702 交易
     try {
@@ -132,8 +136,11 @@ async function main() {
 
   // 检查bank下用户的存款数量
   await getTokenBalance(TOKENBANK_ADDRESS, publicClient, walletClient);
+
+  // 检查EOA用户余额
   await getTokenBalance(eoa.address, publicClient, walletClient);
 
+  // 取消智能合约账户
   const cancelAuthorization = await walletClient.signAuthorization({
     contractAddress: zeroAddress,
     executor: 'self', 

@@ -37,3 +37,6 @@
 [submodule "LaunchPad/contracts/lib/openzeppelin-contracts"]
 	path = LaunchPad/contracts/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "myfirst-foundry/lib/permit2"]
+	path = myfirst-foundry/lib/permit2
+	url = https://github.com/Uniswap/permit2

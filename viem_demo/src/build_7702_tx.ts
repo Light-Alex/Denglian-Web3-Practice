@@ -9,20 +9,20 @@ import SimpleDelegateAbi from './abis/SimpleDelegate.json' with { type: 'json' }
 import ERC20Abi from './abis/MyERC20.json' with { type: 'json' };
 import TokenBankAbi from './abis/TokenBank.json' with { type: 'json' };
 
+/**
+ * 项目说明：Alice EOA账户升级为智能合约账户，并通过Bob账户向Alice合约账户地址发送EIP-7702交易，实现Alice合约账户批量执行向Bank授权和存款
+ */
 
 // ====== 配置 ======
 const ALICE_PRIVATE_KEY = '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80';
 const BOB_PRIVATE_KEY = '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d';
 
-const SIMPLE_DELEGATE_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-const ERC20_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
-const TOKENBANK_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+const SIMPLE_DELEGATE_ADDRESS = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+const ERC20_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const TOKENBANK_ADDRESS = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
 
 // deposit 参数
 const DEPOSIT_AMOUNT = 1000000000000000000n; // 1 token
-
-
-
 
 // 查询指定地址的链上代码
 async function getCodeAtAddress(address: string, publicClient:any) {
@@ -31,6 +31,7 @@ async function getCodeAtAddress(address: string, publicClient:any) {
   return code;
 }
 
+// 查询指定地址的 ERC20 余额
 async function getTokenBalance(userAddress: string, publicClient:any, walletClient:any) {
     const eoaTokenBalance = await publicClient.readContract({
         address: ERC20_ADDRESS,
@@ -44,24 +45,22 @@ async function getTokenBalance(userAddress: string, publicClient:any, walletClie
 
 async function main() {
 
-    const alice = privateKeyToAccount(ALICE_PRIVATE_KEY as `0x${string}`);
-    
-    // bob as relay 代替 alice 发送交易
-    const bob  = privateKeyToAccount(BOB_PRIVATE_KEY as `0x${string}`);
-
-    const publicClient = createPublicClient({
-        chain: foundry,
-        transport: http(process.env.RPC_URL!),
-    });
-
-    const bobWalletClient = createWalletClient({
-        account: bob,
-        chain: foundry,
-        transport: http('http://127.0.0.1:8545'),
-    } )   
-
-
+  const alice = privateKeyToAccount(ALICE_PRIVATE_KEY as `0x${string}`);
   
+  // bob as relay 代替 alice 发送交易
+  const bob  = privateKeyToAccount(BOB_PRIVATE_KEY as `0x${string}`);
+
+  const publicClient = createPublicClient({
+      chain: foundry,
+      transport: http(process.env.RPC_URL!),
+  });
+
+  const bobWalletClient = createWalletClient({
+      account: bob,
+      chain: foundry,
+      transport: http('http://127.0.0.1:8545'),
+  } )   
+
   // 1. 构造 calldata
   const approveCalldata = encodeFunctionData({
     abi: ERC20Abi,
@@ -88,7 +87,6 @@ async function main() {
     },
   ];
 
-
   // 0. 查询eoa的链上代码
   const code =await getCodeAtAddress(alice.address, publicClient);
 
@@ -100,7 +98,6 @@ async function main() {
       args: [calls],
     });
 
-
     const hash = await bobWalletClient.sendTransaction({
       to: alice.address,
       data: executeCalldata,
@@ -110,23 +107,21 @@ async function main() {
     console.log('交易状态:', receipt.status === 'success' ? '成功' : '失败')
 
   } else {
-
     // 生成 EIP-7702 授权
-
-
     const aliceWalletClient = createWalletClient({
       account: alice,
       chain: foundry,
       transport: http('http://127.0.0.1:8545'),
   } )  
 
+    // 将Alice账户转换为合约账户（通过delegate_call的方式）
     const authorization = await aliceWalletClient.signAuthorization({
       account: alice,
       contractAddress: SIMPLE_DELEGATE_ADDRESS,
     });
 
     // Designate the Contract on the EOA, and invoke the execute function
-    // 发送 EIP-7702 交易
+    // 通过Bob账户发送 EIP-7702 交易
     try {
       const hash = await bobWalletClient.writeContract({
         abi: SimpleDelegateAbi,
@@ -144,6 +139,7 @@ async function main() {
   // 检查bank下用户的存款数量
   await getTokenBalance(TOKENBANK_ADDRESS, publicClient, bobWalletClient);
   await getTokenBalance(alice.address, publicClient, bobWalletClient);
+  await getTokenBalance(bob.address, publicClient, bobWalletClient);
   await getCodeAtAddress(alice.address, publicClient);
 }
 

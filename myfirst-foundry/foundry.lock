@@ -1,4 +1,7 @@
 {
+  "../LaunchPad/contracts/lib/openzeppelin-contracts": {
+    "rev": "fcbae5394ae8ad52d8e580a3477db99814b9d565"
+  },
   "../NFTMarket/contracts/lib/erc721-permit": {
     "rev": "32690e8aef889027b481d3e22bb482bcdc87fad2"
   },

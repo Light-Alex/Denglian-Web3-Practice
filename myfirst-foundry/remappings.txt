@@ -3,3 +3,4 @@
 @openzeppelin/contracts-upgradeable/=lib/openzeppelin-contracts-upgradeable/contracts/
 forge-std/=lib/forge-std/src/
 @chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/
+@permit2-light-sdk/=lib/permit2/src/
