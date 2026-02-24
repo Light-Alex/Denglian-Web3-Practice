@@ -6,7 +6,7 @@ import "../src/TokenBankV3.sol";
 
 contract DeployTokenBankV3 is Script {
     // V1 Token address (reuse existing token)
-    address constant TOKEN_ADDRESS = 0xD6c393ffD2916d93F5Dd842FB1eD0C6dE5A2F142;
+    address constant TOKEN_ADDRESS = 0xaB130CE523dA1b05603B7aD2eb65Cb5Fc6c6F94d;
 
     function run() external {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");

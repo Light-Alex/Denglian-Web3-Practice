@@ -2,8 +2,8 @@
 
 // V1 Contracts
 export const CONTRACTS_V1 = {
-  MyToken: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
-  TokenBank: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+  MyToken: '0xaB130CE523dA1b05603B7aD2eb65Cb5Fc6c6F94d',
+  TokenBank: '0x1eB0764649Dc852e8782257D78918AFC20359Db5',
 } as const;
 
 // V2 Contracts
@@ -27,7 +27,7 @@ export const CONTRACTS_PERMIT2 = {
 
 // Delegate Contract (EIP-7702)
 export const CONTRACTS_DELEGATE = {
-  Delegate: '0xD842b1A2551dB2F691745984076F3b4bf87485c8',
+  Delegate: '0x5f7bB645043a732F0e107C1c8011A9e263beDb66',
 } as const;
 
 // 默认导出V1（向后兼容）
