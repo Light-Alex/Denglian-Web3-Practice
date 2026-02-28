@@ -17,6 +17,7 @@
     "example-decoder": "ts-node src/examples/decoder_comparison.ts",
     "scan_sol_transfers": "ts-node src/scan_sol_transfers.ts",
     "transfer_sol": "ts-node src/transfer_sol.ts",
+    "counter": "ts-node src/counter.ts",
     "build": "tsc"
   },
   "dependencies": {

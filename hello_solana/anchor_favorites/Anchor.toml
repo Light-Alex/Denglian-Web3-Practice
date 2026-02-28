@@ -7,6 +7,7 @@ skip-lint = false
 
 [programs.localnet]
 anchor_favorites = "Fi5xD9JLTd5GoYqPywXCCunZwvt172gJCtpkB3EMQ9ja"
+counter = "C8LHYSW1N1V3cN663kPJmdmDbCvnAShk22pVeTrXVBAE"
 emit_log = "D9QjqN8PuzRVf2nxWcAa4TfbitBM3Aw1ehaoo6Lt8j2D"
 
 [registry]
